@@ -91,6 +91,9 @@ class AboutIteration < Neo::Koan
     # Describe in your own words what inject does.
     # Inject passes the return value of the current iteration onto the next,
     # and returns the value of the final iteration.
+    #
+    # [2, 3, 4].inject(0) { |x, xx| xx } => 4
+    # [2, 3, 4].inject(0) { |x, xx| x } => 0
   end
 
   def test_all_iteration_methods_work_on_any_collection_not_just_arrays

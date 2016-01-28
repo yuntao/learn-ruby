@@ -17,20 +17,46 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 # * Everything else is worth 0 points.
 #
+# (1=100  1,1=200  1,1,1=1000)
+# (5=50   5,5=100  5,5,5=500 )
 #
 # Examples:
 #
-# score([1,1,1,5,1]) => 1150 points
-# score([2,3,4,6,2]) => 0 points
-# score([3,4,5,3,3]) => 350 points
-# score([1,5,1,2,4]) => 250 points
+# score([1,1,1,5,1]) => 1150 points   1,1,1,1,5
+# score([2,3,4,6,2]) => 0 points      2,2,3,4,6
+# score([3,4,5,3,3]) => 350 points    3,3,3,4,5
+# score([1,5,1,2,4]) => 250 points    1,1,2,4,5
 #
 # More scoring examples are given in the tests below:
 #
 # Your goal is to write the score method.
 
 def score(dice)
-  # You need to write this method
+  one_score = [100, 100, 800]
+  five_score = [50, 50, 400]
+
+  itemCount = 0
+  lastItem = 0
+
+  dice.sort.inject(0) {
+    |points, item|
+
+    # Update count and track last item
+    itemCount = item == lastItem ? itemCount + 1 : 1
+    itemCount = itemCount == 4 ? 1 : itemCount
+    lastItem = item
+
+    # Calculate points
+    if item == 1
+      points += one_score[itemCount - 1]
+    elsif item == 5
+      points += five_score[itemCount - 1]
+    elsif itemCount == 3
+      points += 100 * item
+    else
+      points
+    end
+  }
 end
 
 class AboutScoringProject < Neo::Koan
